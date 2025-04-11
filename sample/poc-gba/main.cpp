@@ -2,6 +2,8 @@
 #include <raylib.h>
 #include <string>
 
+#include "graphics/pokeemerald.h"
+
 extern "C"
 {
   __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
@@ -22,12 +24,26 @@ main()
              window_height * scale_factor,
              window_title.c_str());
 
+  Image image = {
+    .data = POKEEMERALD_DATA,
+    .width = POKEEMERALD_WIDTH,
+    .height = POKEEMERALD_HEIGHT,
+    .mipmaps = 1,
+    .format = POKEEMERALD_FORMAT,
+  };
+
+  Texture2D texture = LoadTextureFromImage(image);
+
   while (!WindowShouldClose()) {
     BeginDrawing();
-    ClearBackground(RAYWHITE);
-    DrawText("Hello, Raylib!", 0, 0, 32, LIGHTGRAY);
+    ClearBackground(BLACK);
+
+    DrawTextureEx(texture, Vector2{}, 0.0f, (float)scale_factor, WHITE);
+
     EndDrawing();
   }
+
+  UnloadTexture(texture);
 
   CloseWindow();
 }
